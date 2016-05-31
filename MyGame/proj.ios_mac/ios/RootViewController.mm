@@ -154,7 +154,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated{
     
-    
+    self.eaglView=nil;
 }
 - (void)dealloc {
     [super dealloc];
