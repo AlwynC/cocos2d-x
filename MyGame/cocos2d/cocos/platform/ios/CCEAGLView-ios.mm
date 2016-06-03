@@ -729,6 +729,16 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)onUIKeyboardNotification:(NSNotification *)notif;
 {
+    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    //check if Director has a valid openGLView(check if cocos2d-x game scene is active)
+    if(!glview){
+        
+        //if Director has no valid openGLView(cocos2d-x scene is closed) release this current strongly retained instance of CCEAGLView which was not released properly in the RootViewController
+       self=nil;
+       
+        
+    }else{
+        //else if cocos2d-x game scene is active listen to the notification
     NSString * type = notif.name;
     
     NSDictionary* info = [notif userInfo];
@@ -792,7 +802,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     }
 #endif
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    
     float scaleX = glview->getScaleX();
     float scaleY = glview->getScaleY();
     
@@ -858,6 +868,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         caretRect_ = CGRectZero;
         dispatcher->dispatchKeyboardDidHide(notiInfo);
         isKeyboardShown_ = NO;
+    }
     }
 }
 
