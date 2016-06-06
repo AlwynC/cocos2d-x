@@ -730,15 +730,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void)onUIKeyboardNotification:(NSNotification *)notif;
 {
     auto glview = cocos2d::Director::getInstance()->getOpenGLView();
-    //check if Director has a valid openGLView(check if cocos2d-x game scene is active)
-    if(!glview){
-        
-        //if Director has no valid openGLView(cocos2d-x scene is closed) release this current strongly retained instance of CCEAGLView which was not released properly in the RootViewController
-       self=nil;
+    CCASSERT(glview!=nullptr, "CCEAGLView strong reference not released in view controller!");
        
-        
-    }else{
-        //else if cocos2d-x game scene is active listen to the notification
     NSString * type = notif.name;
     
     NSDictionary* info = [notif userInfo];
@@ -869,7 +862,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         dispatcher->dispatchKeyboardDidHide(notiInfo);
         isKeyboardShown_ = NO;
     }
-    }
+    
 }
 
 #if !defined(CC_TARGET_OS_TVOS)
